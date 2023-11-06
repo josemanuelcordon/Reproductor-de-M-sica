@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/styles.css">
+    <title>Spotify Chino</title>
+</head>
+
+<body>
+    <main>
+
+        <?php
+        echo '<nav id="nav-bar">';
+        echo '<section id="nav-menu" class="section">';
+        echo '<a id="logo" href="index.php">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-spotify" viewBox="0 0 16 16">
+    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.669 11.538a.498.498 0 0 1-.686.165c-1.879-1.147-4.243-1.407-7.028-.77a.499.499 0 0 1-.222-.973c3.048-.696 5.662-.397 7.77.892a.5.5 0 0 1 .166.686zm.979-2.178a.624.624 0 0 1-.858.205c-2.15-1.321-5.428-1.704-7.972-.932a.625.625 0 0 1-.362-1.194c2.905-.881 6.517-.454 8.986 1.063a.624.624 0 0 1 .206.858zm.084-2.268C10.154 5.56 5.9 5.419 3.438 6.166a.748.748 0 1 1-.434-1.432c2.825-.857 7.523-.692 10.492 1.07a.747.747 0 1 1-.764 1.288z"/>
+    </svg>Spotify</a>';
+        echo '<a href="index.php?logout=1&c=usuario">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+    <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+    </svg>Cerrar sesión</a>';
+        echo '<a href="index.php?c=listaReproduccion&pl=1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-music-note-list" viewBox="0 0 16 16">
+    <path d="M12 13c0 1.105-1.12 2-2.5 2S7 14.105 7 13s1.12-2 2.5-2 2.5.895 2.5 2z"/>
+    <path fill-rule="evenodd" d="M12 3v10h-1V3h1z"/>
+    <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1V2.82z"/>
+    <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/>
+    </svg>Crear Playlist</a>';
+        echo '<a href="index.php?c=listaReproduccion&search-pl=1">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+    </svg>Buscar Playlist</a>';
+        echo '</section>';
+        echo '<section id="playlist-menu" class="section">';
+        echo '<h3>Mis Playlists</h3>';
+        if ($misPlaylist) {
+            foreach ($misPlaylist as $playlist) {
+                echo '<a href="index.php?c=listaReproduccion&show-pl=' . $playlist->getId() . '">' . $playlist->getName() . '</a>';
+            }
+        }
+        echo '<h3>Mis Playlists Favoritas</h3>';
+        if ($favourites) {
+            foreach ($favourites as $playlist) {
+                echo '<a href="index.php?c=listaReproduccion&show-pl=' . $playlist->getId() . '">' . $playlist->getName() . '</a>';
+            }
+        }
+        echo '</section>';
+        echo '</nav>';
+        echo '<section id="main-window">';
+        echo '<section id="main-view" class="section">';
+        echo '<button id="pl-play" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+        <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+      </svg></button>';
+        if ($playlist_selected) {
+            echo '<h1>' . $playlist_selected->getName() . '</h1>';
+            echo '<p>Duration of Palylist: ' . $playlist_selected->getDurationFormatted() . '</p>';
+            if ($playlist_selected->getCreator()->getId() == $_SESSION['user']->getId()) {
+                echo '<a href="index.php?c=cancion&pl-id=' . $playlist_selected->getId() . '">Añadir Cancion</a><br>';
+            }
+            if ($_SESSION['user']->isFavourite($playlist_selected->getId())) {
+                echo '<a href="index.php?c=listaReproduccion&show-pl=' . $playlist_selected->getId() . '&fav=0">Quitar de favoritos</a>';
+            } else {
+                echo '<a href="index.php?c=listaReproduccion&show-pl=' . $playlist_selected->getId() . '&fav=1">Añadir a favoritos</a>';
+            }
+
+            foreach ($playlist_selected->getSongs() as $song) {
+                echo '<p>' . $song->getTitle() . ' - ' . $song->getAuthor() . '</p>';
+                echo '<p>Duración: ' . $song->getDurationFormatted() . '</p>';
+                echo '<audio controls>
+            <source src="' . $song->getMmp3() . '" type="audio/mpeg">
+            Your browser does not support the audio element.
+            </audio>';
+            }
+            echo '<p>Creador: <strong>' . $playlist_selected->getCreator()->getName() . '</strong></p>';
+        }
+
+        echo '</section>';
+        echo '</section>';
+        ?>
+    </main>
+    <script>
+        const elementosDeAudio = document.querySelectorAll('audio');
+        let currentSongIndex = 0;
+        let pause = 0;
+
+        function playSong() {
+            if (pause) {
+                elementosDeAudio[currentSongIndex].pause();
+                pause = 0;
+            } else {
+                elementosDeAudio[currentSongIndex].play();
+                pause = 1;
+            }
+
+        }
+
+        function playNextSong() {
+            currentSongIndex = (currentSongIndex + 1) % elementosDeAudio.length;
+            elementosDeAudio[currentSongIndex].play();
+        }
+
+        // Agrega un evento 'ended' a cada elemento de audio para detectar el final de la reproducción
+        elementosDeAudio.forEach((audio, index) => {
+            audio.addEventListener('ended', playNextSong);
+        });
+
+        document.getElementById('pl-play').addEventListener('click', playSong);
+    </script>
+</body>
+
+</html>
