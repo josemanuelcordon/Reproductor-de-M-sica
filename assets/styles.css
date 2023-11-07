@@ -276,3 +276,17 @@ audio {
   background-size: contain;
   background-repeat: no-repeat;
 }
+
+.pl-title {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.pl-title + a {
+  display: block;
+}
+
+.pl-header {
+  background: linear-gradient(var(--text-color-section), var(--section-color));
+  border-radius: 8px 8px 0px 0px;
+}

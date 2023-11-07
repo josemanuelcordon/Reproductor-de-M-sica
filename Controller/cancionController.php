@@ -7,7 +7,7 @@ if (!empty($_POST['song-title'])) {
     $id_creator = $_SESSION['user']->getId();
     if ($_FILES['song-mp3']) {
         $mp3 = "assets/music/" . $title . ".mp3";
-        $destino = $_SERVER['DOCUMENT_ROOT'] . "/Reproductor-de-M-sica/" . $mp3;
+        $destino = $_SERVER['DOCUMENT_ROOT'] . "/musica/" . $mp3;
         move_uploaded_file($_FILES["song-mp3"]["tmp_name"], $destino);
     } else {
         $mp3 = "Todavia no disponible";
