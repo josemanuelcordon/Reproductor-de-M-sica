@@ -110,6 +110,9 @@ function startSongBarUpdate() {
   const timeElement = document.getElementById("time");
   const currentSong = elementosDeAudio[currentSongIndex];
   clearPlayer();
+  document
+    .getElementById("barra-musica")
+    .setAttribute("max", elementosDeAudio[currentSongIndex].duration);
   // Comienza la actualización continua de la barra de progreso
   const updateInterval = setInterval(() => {
     // Verifica si la canción actual ha terminado
