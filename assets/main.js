@@ -105,6 +105,15 @@ function formatTime(time) {
   return `${minutos}:${segundos}`;
 }
 
+function calcSongTime(secs) {
+  const minutos =
+    Math.floor(secs / 60) < 10
+      ? `0${Math.floor(secs / 60)}`
+      : `${Math.floor(secs / 60)}`;
+  const segundos = secs - Math.floor(secs / 60) * 60;
+  return `${minutos}:${segundos}`;
+}
+
 function startSongBarUpdate() {
   const barraMusica = document.getElementById("barra-musica");
   const timeElement = document.getElementById("time");
@@ -142,7 +151,7 @@ function startSongBarUpdate() {
     // Actualiza la barra de progreso
     const currentTime = currentSong.currentTime;
     const duration = currentSong.duration;
-    timeElement.textContent = Math.ceil(currentTime);
+    timeElement.textContent = calcSongTime(Math.floor(currentTime));
     barraMusica.value = currentTime;
   }, 1000); // Actualiza cada segundo (ajusta según lo necesites)
 }
