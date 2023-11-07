@@ -30,7 +30,7 @@ async function loadPlaylist(id) {
     let contador = 0;
     playlist.songs.forEach((song) => {
       elementos += `<p>${song.title} - ${song.author}</p>
-                    <p>Duración: ${song.duration}</p>
+                    <p>Duración: ${formatTime(song.duration)}</p>
                     <audio controls>
                     <source src="${song.mp3}" type="audio/mpeg">
                     Your browser does not support the audio element.
@@ -98,8 +98,11 @@ function playBackSong() {
   elementosDeAudio[currentSongIndex].play();
 }
 
-function calcSongTime(duration) {
-  return Math.floor(duration) * 60 + (duration - Math.floor(duration)) * 100;
+function formatTime(time) {
+  let minutos =
+    Math.floor(time) < 10 ? `0${Math.floor(time)}` : `${Math.floor(time)}`;
+  let segundos = `${Math.floor((time - Math.floor(time)) * 100)}`;
+  return `${minutos}:${segundos}`;
 }
 
 function startSongBarUpdate() {
