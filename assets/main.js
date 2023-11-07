@@ -1,5 +1,4 @@
 const playlistButton = document.querySelectorAll(".pl-button");
-
 const container = document.getElementById("main-view");
 let elementosDeAudio = document.querySelectorAll("audio");
 let currentSongIndex = 0;
@@ -17,9 +16,14 @@ async function loadPlaylist(id) {
   let elementos = "";
   container.innerHTML = "";
   const playlist = await fetchPlayList(id);
+  console.log(playlist);
   elementos += `<header class="pl-header">`;
   elementos += `<img src="${playlist.img}" width="200px"/>`;
   elementos += `<h1 class="pl-title">${playlist.name}</h1>`;
+  elementos += `<p>Canciones de la playlist: ${
+    playlist.songs ? playlist.songs.length : 0
+  }</p>`;
+  elementos += `<p>Creador: ${playlist.creator}</p>`;
   elementos += `<a href="index.php?c=cancion&pl-id=${playlist.id}">Añadir Cancion</a><br>`;
   elementos += `</header>`;
   if (playlist.songs) {
@@ -101,7 +105,10 @@ function playBackSong() {
 function formatTime(time) {
   let minutos =
     Math.floor(time) < 10 ? `0${Math.floor(time)}` : `${Math.floor(time)}`;
-  let segundos = `${Math.floor((time - Math.floor(time)) * 100)}`;
+  let segundos =
+    Math.floor((time - Math.floor(time)) * 100) < 10
+      ? `0${Math.floor((time - Math.floor(time)) * 100)}`
+      : `${Math.floor((time - Math.floor(time)) * 100)}`;
   return `${minutos}:${segundos}`;
 }
 
@@ -154,7 +161,7 @@ function startSongBarUpdate() {
     // Actualiza la barra de progreso
     const currentTime = currentSong.currentTime;
     const duration = currentSong.duration;
-    timeElement.textContent = calcSongTime(Math.floor(currentTime));
+    timeElement.textContent = calcSongTime(Math.ceil(currentTime));
     barraMusica.value = currentTime;
   }, 1000); // Actualiza cada segundo (ajusta según lo necesites)
 }
@@ -163,7 +170,7 @@ function clearPlayer() {
   const barraMusica = document.getElementById("barra-musica");
   const timeElement = document.getElementById("time");
   barraMusica.value = 0;
-  timeElement.textContent = 0;
+  timeElement.textContent = "00:00";
   elementosDeAudio[currentSongIndex].currentTime = 0;
 }
 
