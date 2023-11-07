@@ -110,7 +110,10 @@ function calcSongTime(secs) {
     Math.floor(secs / 60) < 10
       ? `0${Math.floor(secs / 60)}`
       : `${Math.floor(secs / 60)}`;
-  const segundos = secs - Math.floor(secs / 60) * 60;
+  const segundos =
+    secs - Math.floor(secs / 60) * 60 < 10
+      ? `0${secs - Math.floor(secs / 60) * 60}`
+      : `${secs - Math.floor(secs / 60) * 60}`;
   return `${minutos}:${segundos}`;
 }
 
@@ -175,7 +178,7 @@ elementosDeAudio.forEach((audio, index) => {
 document.getElementById("barra-musica").addEventListener("change", () => {
   const nuevoTime = document.getElementById("barra-musica").value;
   elementosDeAudio[currentSongIndex].currentTime = nuevoTime;
-  document.getElementById("time").textContent = nuevoTime;
+  document.getElementById("time").textContent = calcSongTime(nuevoTime);
 });
 
 document.getElementById("play").addEventListener("click", playSong);
