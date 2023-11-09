@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Chino</title>
+</head>
+
+<body>
+    <?php
+    echo '<form action="index.php?c=cancion&adm-song=1&index=' . $_GET['index'] . '" method="POST">
+        <label>Buscar</label>
+        <input type="text" placeholder"Buscar Canción..." name="search-song"/>
+        <input type="submit" value="Buscar">
+    </form>';
+    echo '<section class="song-wrapper">';
+    foreach ($songsLimited as $song) {
+        echo 'Título: ' . $song->getTitle() . '<br>';
+        echo 'Autor: ' . $song->getAuthor() . '<br>';
+        echo 'Duracion: ' . $song->getDurationFormatted() . '<br>';
+        echo '<a href="index.php?c=cancion&edit-s=' . $song->getId() . '">Editar Canción</a><br>';
+    }
+
+    if ($nLinks > 1) {
+        echo '<nav class="pagination-bar">';
+        if ($_GET['index'] > 2) {
+            echo '<a href="index.php?c=cancion&adm-song=1&index=1">Primera</a>';
+        }
+        for ($i = $_GET['index'] - 1; $i <= $_GET['index'] + 1; $i++) {
+            if ($i > 0 && $i <= $nLinks)
+                echo '<a href="index.php?c=cancion&adm-song=1&index=' . $i . '">' . $i . '</a>';
+        }
+        if ($_GET['index'] < $nLinks - 1) {
+            echo '<a href="index.php?c=cancion&adm-song=1&index=' . $nLinks . '">Última</a>';
+        }
+        echo '</nav>';
+    }
+    ?>
+</body>
+
+</html>

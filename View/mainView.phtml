@@ -8,7 +8,7 @@
     <title>Spotify Chino</title>
 </head>
 <!-- 1. Falta ocultar el boton de clonar si ya se ha clonado
-     2. Quitar canciones de tus playlists
+     2. Quitar canciones de tus playlists --------------------- HECHO
      3. Admin puede editar canciones
      4. Saber cuantos usuarios tienen nuestra playlist
      5. Cuantas veces se ha clonado una playlist -->
@@ -34,6 +34,10 @@
             <path d="M11 2.82a1 1 0 0 1 .804-.98l3-.6A1 1 0 0 1 16 2.22V4l-5 1V2.82z"/>
             <path fill-rule="evenodd" d="M0 11.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 .5 7H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 .5 3H8a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z"/>
             </svg>Crear Playlist</a>';
+            if ($_SESSION['user']->getRol() == 2) {
+                echo '<a href="index.php?c=cancion&adm-song=1&index=1">Editar canciones</a>';
+            }
+
             echo '<a href="index.php?c=listaReproduccion&search-pl=1">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
