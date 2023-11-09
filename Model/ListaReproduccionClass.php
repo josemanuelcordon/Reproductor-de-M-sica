@@ -75,6 +75,8 @@ class ListaReproduccionClass
         }
         $datos['creator'] = $this->creator->getName();
         $datos['img'] = $this->img;
+        $datos['favourite'] = ListaReproduccionRepository::timesFavourite($this->id);
+        $datos['clonned'] = ListaReproduccionRepository::timesClonned($this->id);
         return json_encode($datos);
     }
 }

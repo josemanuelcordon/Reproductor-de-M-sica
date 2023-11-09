@@ -99,4 +99,21 @@ class ListaReproduccionRepository
         $q = "INSERT INTO pl_clonned VALUES (" . $playlist->getId() . ", " . $idClonned . ")";
         $bd->query($q);
     }
+
+    public static function timesClonned($id)
+    {
+        $bd = Conectar::conexion();
+        $q = "SELECT COUNT(*) FROM pl_clonned WHERE id_original=" . $id;
+        $result = $bd->query($q);
+        $datos = $result->fetch_array();
+        return $datos[0];
+    }
+    public static function timesFavourite($id)
+    {
+        $bd = Conectar::conexion();
+        $q = "SELECT COUNT(*) FROM favourite_pl WHERE id_playlist=" . $id;
+        $result = $bd->query($q);
+        $datos = $result->fetch_array();
+        return $datos[0];
+    }
 }

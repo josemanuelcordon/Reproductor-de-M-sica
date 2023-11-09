@@ -25,6 +25,7 @@ async function loadPlaylist(id) {
   let elementos = "";
   container.innerHTML = "";
   const playlist = await fetchPlayList(id);
+  console.log(playlist);
   elementos += `<header class="pl-header">`;
   elementos += `<img src="${playlist.img}" width="200px"/>`;
   elementos += `<h1 class="pl-title">${playlist.name}</h1>`;
@@ -32,6 +33,8 @@ async function loadPlaylist(id) {
     playlist.songs ? playlist.songs.length : 0
   }</p>`;
   elementos += `<p>Creador: ${playlist.creator}</p>`;
+  elementos += `<p>Veces favorita: ${playlist.favourite}</p>`;
+  elementos += `<p>Veces Clonada: ${playlist.clonned}</p>`;
   if (playlist.creator === user) {
     elementos += `<a href="index.php?c=cancion&pl-id=${playlist.id}">Añadir Cancion</a><br>`;
   }
