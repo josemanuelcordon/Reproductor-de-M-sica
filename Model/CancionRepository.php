@@ -54,4 +54,11 @@ class CancionRepository
         $q = "INSERT INTO song_in_playlist VALUES (" . $playlist_id . "," . $song_id . ")";
         $bd->query($q);
     }
+
+    public static function deleteSongFromPlayList($playlist_id, $song_id)
+    {
+        $bd = Conectar::conexion();
+        $q = "DELETE FROM song_in_playlist WHERE id_playlist=" . $playlist_id . " AND id_song=" . $song_id;
+        $bd->query($q);
+    }
 }

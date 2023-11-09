@@ -4,19 +4,27 @@ let elementosDeAudio = document.querySelectorAll("audio");
 let currentSongIndex = 0;
 let pause = 0;
 let singlePlayButton = document.querySelectorAll(".single-song-play");
+const user = document.getElementById("user").value;
 
 async function fetchPlayList(id) {
   const response = await fetch(
     `index.php?c=listaReproduccion&fetch-prueba=${id}`
   );
-  const data = await response.json();
+  const data = response.json();
   return data;
 }
+
+function deleteSong(idPlayList, idSong) {
+  const response = fetch(
+    `index.php?c=cancion&dl-song=${idSong}&dl-pl=${idPlayList}`
+  );
+  return response;
+}
+
 async function loadPlaylist(id) {
   let elementos = "";
   container.innerHTML = "";
   const playlist = await fetchPlayList(id);
-  console.log(playlist);
   elementos += `<header class="pl-header">`;
   elementos += `<img src="${playlist.img}" width="200px"/>`;
   elementos += `<h1 class="pl-title">${playlist.name}</h1>`;
@@ -24,7 +32,11 @@ async function loadPlaylist(id) {
     playlist.songs ? playlist.songs.length : 0
   }</p>`;
   elementos += `<p>Creador: ${playlist.creator}</p>`;
-  elementos += `<a href="index.php?c=cancion&pl-id=${playlist.id}">Añadir Cancion</a><br>`;
+  if (playlist.creator === user) {
+    elementos += `<a href="index.php?c=cancion&pl-id=${playlist.id}">Añadir Cancion</a><br>`;
+  }
+  elementos += `<a href="index.php?c=listaReproduccion&clone=${playlist.id}">Clonar Playlist</a><br>`;
+
   elementos += `</header>`;
   if (playlist.songs) {
     elementos += `<button id="pl-play" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
@@ -32,16 +44,23 @@ async function loadPlaylist(id) {
         </svg></button>`;
     playlist.songs = playlist.songs.map((song) => JSON.parse(song));
     let contador = 0;
+    elementos += `<ul class='song-list'>`;
     playlist.songs.forEach((song) => {
-      elementos += `<p>${song.title} - ${song.author}</p>
+      elementos += `<li id=song-${song.id}>
+                    <p>${song.title} - ${song.author}</p>
                     <p>Duración: ${formatTime(song.duration)}</p>
                     <audio controls>
                     <source src="${song.mp3}" type="audio/mpeg">
                     Your browser does not support the audio element.
                     </audio>
-                    <button class="single-song-play" value="${contador}">Play</button>`;
+                    <button class="single-song-play" value="${contador}">Play</button>
+                    <button value="${
+                      song.id
+                    }" class="delete-song">Eliminar</button>
+                    </li>`;
       contador++;
     });
+    elementos += `</ul>`;
   }
 
   container.innerHTML += elementos;
@@ -56,15 +75,24 @@ async function loadPlaylist(id) {
     });
   });
   document.getElementById("pl-play").addEventListener("click", () => {
-    document
-      .getElementById("barra-musica")
-      .setAttribute("max", elementosDeAudio[currentSongIndex].duration);
     playSong();
     document.getElementById("play").addEventListener("click", playSong);
     document.getElementById("next").addEventListener("click", playNextSong);
     document.getElementById("back").addEventListener("click", playBackSong);
     document.getElementById("barra-musica").value = 0;
     startSongBarUpdate();
+  });
+
+  const deleteBtns = document.querySelectorAll(".delete-song");
+  deleteBtns.forEach((button) => {
+    button.addEventListener("click", () => {
+      const songContainer = document.querySelector(".song-list");
+      const singleSongContainer = document.querySelector(
+        `#song-${button.value}`
+      );
+      deleteSong(playlist.id, button.value);
+      songContainer.removeChild(singleSongContainer);
+    });
   });
 }
 
@@ -175,7 +203,7 @@ function clearPlayer() {
 }
 
 // Agrega un evento 'ended' a cada elemento de audio para detectar el final de la reproducción
-elementosDeAudio.forEach((audio, index) => {
+elementosDeAudio.forEach((audio) => {
   audio.addEventListener("ended", () => {
     clearPlayer();
     playNextSong();

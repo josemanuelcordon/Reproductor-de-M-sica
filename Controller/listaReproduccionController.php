@@ -11,6 +11,13 @@ if (!empty($_POST['pl-name'])) {
     }
 }
 
+if (!empty($_GET['clone'])) {
+    $playListToClon = ListaReproduccionRepository::getPlayListById($_GET['clone']);
+    $id_user = $_SESSION['user']->getId();
+    ListaReproduccionRepository::clonePlayList($playListToClon, $_SESSION['user']->getId());
+    header('location: index.php');
+}
+
 if (!empty($_GET['fetch-prueba'])) {
     $playlist_desired = ListaReproduccionRepository::getPlayListById($_GET['fetch-prueba']);
     echo $playlist_desired->getJSON();

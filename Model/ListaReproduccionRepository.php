@@ -83,4 +83,20 @@ class ListaReproduccionRepository
         }
         return $playlists;
     }
+
+    public static function clonePlayList($playlist, $id_user)
+    {
+        $plName = $playlist->getName();
+        $img = $playlist->getImg();
+        $bd = Conectar::conexion();
+        $q = "INSERT INTO playlists VALUES (NULL, '" . $plName . "', " . $id_user . ", '" . $img . "')";
+        $bd->query($q);
+        $idClonned = $bd->insert_id;
+        foreach ($playlist->getSongs() as $song) {
+            $q = "INSERT INTO song_in_playlist VALUES (" . $idClonned . ", " . $song->getId() . ")";
+            $bd->query($q);
+        }
+        $q = "INSERT INTO pl_clonned VALUES (" . $playlist->getId() . ", " . $idClonned . ")";
+        $bd->query($q);
+    }
 }

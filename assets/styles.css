@@ -302,3 +302,7 @@ audio {
   margin-bottom: 10px;
   cursor: pointer;
 }
+
+.song-list li {
+  list-style: none;
+}

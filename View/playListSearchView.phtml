@@ -25,7 +25,9 @@
     if (!empty($searchedPlaylists)) {
         foreach ($searchedPlaylists as $playlist) {
             echo '<a href="index.php?c=listaReproduccion&show-pl=' . $playlist->getId() . '"><h2>' . $playlist->getName() . ' - ' . count($playlist->getSongs()) . ' canciones</h2></a>';
-            echo '<a href="index.php?c=cancion&pl-id=' . $playlist->getId() . '">Añadir Cancion</a><br>';
+            if ($_SESSION['user']->getName() == $playlist->getCreator()->getName()) {
+                echo '<a href="index.php?c=cancion&pl-id=' . $playlist->getId() . '">Añadir Cancion</a><br>';
+            }
             if ($_SESSION['user']->isFavourite($playlist->getId())) {
                 echo '<a href="index.php?c=listaReproduccion&show-pl=' . $playlist->getId() . '&fav=0">Quitar de favoritos</a>';
             } else {
